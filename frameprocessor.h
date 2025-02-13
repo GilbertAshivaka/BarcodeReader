@@ -17,12 +17,18 @@ public:
 
 signals:
     void videoSinkChanged();
+    void newFrameAvailable(QImage &image);
 
 public slots:
     processFrame(const QVideoFrame &frame);
 
+private slots:
+    void onImageProcessed(const QString &out);
+
 private:
     QVideoSink m_videoSink;
+    bool m_isAvailable;
+    QString m_displayingString;
 };
 
 #endif // FRAMEPROCESSOR_H
