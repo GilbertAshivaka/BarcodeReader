@@ -3,27 +3,38 @@
 
 #define DBRERR_SUCCESS 0
 #include "include/DynamsoftBarcodeReader.h"
+#include "include/DynamsoftCaptureVisionRouter.h"
+#include "include/DynamsoftUtility.h"
 
-//using namespace dynamsoft::dbr;
+
+using namespace dynamsoft::license;
+using namespace dynamsoft::cvr;
+using namespace dynamsoft::dbr;
+using namespace dynamsoft::license;
+using namespace dynamsoft::cvr;
+using namespace dynamsoft::dbr;
+using namespace dynamsoft::utility;
+
 
 ImageProcessor::ImageProcessor(QObject *parent)
     : QObject(parent)
 {
-    reader = DBR_CreateInstance();
+    reader = CCaptureVisionRouter::CCaptureVisionRouter();
+
 
     char errorMessage[256];
 
-    PublicRuntimeSettings settings;
-    DBR_GetRuntimeSettings(reader, &settings);
-    DBR_UpdateRuntimeSettings(reader, &settings, errorMessage, 256);
+
+    SimplifiedCaptureVisionSettings settings;
+    CCaptureVisionRouter::GetSimplifiedSettings(reader, &settings);
+    CCaptureVisionRouter::UpdateSettings(reader, &settings, errorMessage, 256);
 
 
 }
 
 ImageProcessor::~ImageProcessor()
 {
-    if (reader) DBR_DestroyInstance(reader);
-
+    if (reader) CCaptureVisionRouter::~CCaptureVisionRouter();
 }
 
 void ImageProcessor::processImage(const QImage &image)
@@ -51,7 +62,7 @@ void ImageProcessor::processImage(const QImage &image)
 
 
     TextResultArray *handler = NULL;
-    DBR_GetAllTextResults(reader, *handler);
+    DBR_GetAllTextResults(reader, &handler);
     TextResults **results = handler->results;
     int count = handler->resultCount;
 

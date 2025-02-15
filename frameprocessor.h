@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVideoSink>
 #include <QVideoFrame>
+#include "include/DynamsoftBarcodeReader.h"
 
 class FrameProcessor : public QObject
 {
@@ -26,7 +27,7 @@ private slots:
     void onImageProcessed(const QString &out);
 
 private:
-    QVideoSink m_videoSink;
+    QVideoSink* m_videoSink;
     bool m_isAvailable;
     QString m_displayingString;
 };

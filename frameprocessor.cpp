@@ -1,16 +1,25 @@
 #include "frameprocessor.h"
 #include "imageprocessor.h"
 
+#include "include/DynamsoftBarcodeReader.h"
+#include "include/DynamsoftCaptureVisionRouter.h"
+
+using namespace dynamsoft::license;
+using namespace dynamsoft::cvr;
+using namespace dynamsoft::dbr;
+//using namespace dynamsoft::utility;
+//using namespace cv;
+
 FrameProcessor::FrameProcessor(QObject *parent)
     : QObject{parent}
 {
     m_isAvailable = true;
     char errorMsgBuffer[512];
 
-    DBR_InitLiscence("t0068lQAAABa8p7d6vIsLzXULX4XjMq689SBDTTjrc+ysij5GMVzyfNu0DF7yMUPWY+FmrDMolnhZSBqdHn9nzwVElDQ/8aY=;t0068lQAAAGXVdR0NdbdrG3GmOSmy5GOkKEP4v8XG+qCXVenT2I9CHYIDns4ZHJc0FE+BxPXzC1tbsOMkKlWxRCbz3F7dCqE=", errorMsgBuffer, 512);
+    CLicenseManager::InitLicense("t0068lQAAABa8p7d6vIsLzXULX4XjMq689SBDTTjrc+ysij5GMVzyfNu0DF7yMUPWY+FmrDMolnhZSBqdHn9nzwVElDQ/8aY=;t0068lQAAAGXVdR0NdbdrG3GmOSmy5GOkKEP4v8XG+qCXVenT2I9CHYIDns4ZHJc0FE+BxPXzC1tbsOMkKlWxRCbz3F7dCqE=", errorMsgBuffer, 512);
     printf("DBR_InitLicense: %s\n", errorMsgBuffer);
 
-    const char *version = DBR_GetVersion();
+    const char *version = CBarcodeReaderModule::GetVersion();
     m_displayingString = QString(version);
 
     ImageProcessor *processor = new ImageProcessor();
